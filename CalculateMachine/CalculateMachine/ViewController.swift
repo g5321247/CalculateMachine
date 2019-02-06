@@ -13,14 +13,32 @@ class ViewController: UIViewController {
     @IBOutlet weak var llNumber: UILabel!
 
     @IBAction func didTapNumberBtn(_ sender: UIButton) {
-        guard let number = sender.titleLabel?.text else {
-            return
-        }
-        
-        viewModel.inputs.enterNumber(number: number)
+        guard let numberString = sender.titleLabel?.text else { return }
+        viewModel.inputs.enterNumber(number: numberString)
     }
     
-    private let viewModel = ViewModel(totalNumberString: "0")
+    @IBAction func didTapOperand(_ sender: UIButton) {
+        guard let numberString = sender.titleLabel?.text else { return }
+        viewModel.inputs.enterOperand(operandStr: numberString)
+    }
+    
+    @IBAction func didTapEqual(_ sender: UIButton) {
+        viewModel.inputs.equal()
+    }
+    
+    @IBAction func didTapAC(_ sender: UIButton) {
+        viewModel.inputs.reset()
+    }
+    
+    @IBAction func didTapNegitive(_ sender: UIButton) {
+        viewModel.inputs.negitive()
+    }
+    
+    @IBAction func didTapPercentage(_ sender: UIButton) {
+        viewModel.inputs.percent()
+    }
+    
+    private let viewModel = ViewModel(inputNumberString: "0")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,10 +50,14 @@ class ViewController: UIViewController {
         var outputs = viewModel.outputs
         
         outputs.didTextNumber = { [weak self] (result) in
-            
             self?.llNumber.text = String(result)
+            self?.viewModel.inputNumber(number: result)
         }
         
+        outputs.didCalculateNumber = { [weak self] (result) in
+            self?.llNumber.text = String(result)
+            self?.viewModel.inputNumber(number: result)
+        }
     }
     
 }

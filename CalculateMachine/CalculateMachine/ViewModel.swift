@@ -16,25 +16,29 @@ enum Operand: String {
     case divide = "/"
     
     // 只有等於時 operand 會變成 nil
-    func operand(num1: Double, num2: Double) -> Double {
+    func operand(num1: Double, num2: Double) -> Double? {
         switch self {
         case .plus:
             return num1 + num2
-        
         case .minus:
             return num1 - num2
-            
         case .multiple:
             return num1 * num2
-        default:
-            return 0
+        case .divide:
+            guard num2 != 0 else { return nil }
+            return num1 / num2
         }
     }
 }
 
 protocol ViewModelInputs {
+    func inputNumber(number: String)
     func enterNumber(number: String)
     func enterOperand(operandStr: String)
+    func equal()
+    func reset()
+    func negitive()
+    func percent()
 }
 
 protocol ViewModelOutputs {
@@ -58,11 +62,15 @@ class ViewModel: ViewModelBinding, ViewModelInputs, ViewModelOutputs {
     private var tmpNumber: Double?
     private var operand: Operand?
     
-    init(totalNumberString: String) {
-        self.inputNumberString = totalNumberString
+    init(inputNumberString: String) {
+        self.inputNumberString = inputNumberString
     }
     
     // MARK: - ViewMoedl Inputs
+    func inputNumber(number: String) {
+        inputNumberString = number
+    }
+    
     func enterNumber(number: String) {
         if operand != nil {
             swapTotalAndTmpValue()
@@ -78,35 +86,50 @@ class ViewModel: ViewModelBinding, ViewModelInputs, ViewModelOutputs {
     }
     
     func enterOperand(operandStr: String) {
-        operand = getOperandCharater(char: operandStr)
+        operand = Operand(rawValue: operandStr)!
         
         guard let secondNumber = Double(inputNumberString) else { return }
-        calculator(num1: tmpNumber, num2: secondNumber, operand: operand)
+        calculate(num1: tmpNumber, num2: secondNumber, operand: operand)
     }
     
-    func calculator(num1: Double?, num2: Double, operand: Operand?) {
-        guard let num1 = num1 else { return }
-        guard let operand = operand else { return }
+    func equal() {
+        guard let secondNumber = Double(inputNumberString) else { return }
+        guard let tmpNumber = tmpNumber else {
+            // 若點完運算符號後直接按等於，會使用第一個數字
+            calculate(num1: secondNumber, num2: secondNumber, operand: operand)
+            return
+        }
         
-        let result = operand.operand(num1: num1, num2: num2)
-        
-        // 確定小數點後面有沒有值，沒有就回傳整數，有回傳 Double
-        let numberString: String = result == floor(result) ? String(Int(result)) : String(result)
-        didCalculateNumber?(numberString)
-
-        // Change total number, reset temp Number and operand
+        calculate(num1: tmpNumber, num2: secondNumber, operand: operand)
+    }
+    
+    func reset() {
+        inputNumberString = "0"
         tmpNumber = nil
+        operand = nil
+        didTextNumber?(inputNumberString)
+    }
+
+    func negitive() {
+        guard var inputNumber = Double(inputNumberString) else { return }
+        inputNumber *= -1
+        
+        didTextNumber?(isIntOrDouble(num: inputNumber))
+    }
+    
+    func percent() {
+        guard var inputNumber = Double(inputNumberString) else { return }
+        inputNumber *= 0.1
+        
+        didTextNumber?(isIntOrDouble(num: inputNumber))
     }
 }
 
 private extension ViewModel {
     
+    // Check input charater
     func isFirstCharZero(number: String) {
-        if inputNumberString != "0" {
-            inputNumberString += number
-        } else {
-            inputNumberString = number
-        }
+        (inputNumberString != "0") ? (inputNumberString += number) : (inputNumberString = number)
     }
     
     func charIsOnLimited(numberStr: String) -> Bool {
@@ -114,14 +137,34 @@ private extension ViewModel {
         return true
     }
     
-    func getOperandCharater(char: String) -> Operand {
-        return Operand(rawValue: char)!
-    }
-    
+    // After tap operand
     func swapTotalAndTmpValue() {
         guard let value = Double(inputNumberString) else { return }
         
         tmpNumber = value
         inputNumberString = "0"
+    }
+    
+    func calculate(num1: Double?, num2: Double, operand: Operand?) {
+        guard let num1 = num1 else { return }
+        guard let operand = operand else { return }
+        
+        // 只有當除數為 0 時回傳 nil
+        guard let result = operand.operand(num1: num1, num2: num2) else {
+            didCalculateNumber?("錯誤")
+            tmpNumber = nil
+            return
+        }
+        
+        // 確定小數點後面有沒有值，沒有就回傳整數，有回傳 Double
+        let numberString: String = isIntOrDouble(num: result)
+        didCalculateNumber?(numberString)
+        
+        // reset temp Number
+        tmpNumber = num2
+    }
+    
+    func isIntOrDouble(num: Double) -> String {
+        return num == floor(num) ? String(Int(num)) : String(format: "%.9g", num)
     }
 }
