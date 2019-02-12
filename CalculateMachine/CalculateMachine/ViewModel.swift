@@ -52,7 +52,7 @@ class ViewModel: ViewModelBinding, ViewModelInputs, ViewModelOutputs {
     var outputs: ViewModelOutputs { return self }
 
     // MARK: - ViewMoedl Inputs Parameters
-    var inputNumberString: String!
+    var inputNumberString: String = "0"
     
     // MARK: - ViewMoedl Outputs Parameters
     var didTextNumber: ((String) -> Void)?
@@ -61,10 +61,6 @@ class ViewModel: ViewModelBinding, ViewModelInputs, ViewModelOutputs {
     // MARK: - Variable
     private var tmpNumber: Double?
     private var operand: Operand?
-    
-    init(inputNumberString: String) {
-        self.inputNumberString = inputNumberString
-    }
     
     // MARK: - ViewMoedl Inputs
     func inputNumber(number: String) {

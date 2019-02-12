@@ -38,7 +38,7 @@ class ViewController: UIViewController {
         viewModel.inputs.percent()
     }
     
-    private let viewModel = ViewModel(inputNumberString: "0")
+    private let viewModel = ViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()

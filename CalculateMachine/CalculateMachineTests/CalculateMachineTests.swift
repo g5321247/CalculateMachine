@@ -14,6 +14,8 @@ class CalculateMachineTests: XCTestCase {
     var viewModel: ViewModel!
     
     override func setUp() {
+        viewModel = ViewModel()
+
     }
 
     override func tearDown() {
@@ -22,7 +24,6 @@ class CalculateMachineTests: XCTestCase {
 
     //MARK: - Total Number is zero
     func test_InputIs0_Return0() {
-        viewModel = ViewModel(inputNumberString: "0")
         
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
@@ -34,7 +35,6 @@ class CalculateMachineTests: XCTestCase {
     }
     
     func test_InputIs8_Return8() {
-        viewModel = ViewModel(inputNumberString: "0")
 
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
@@ -47,40 +47,44 @@ class CalculateMachineTests: XCTestCase {
     
     //MARK: - Total Number is not zero
     func test_TotalNumberIs1AndInputIs7_Return17() {
-        viewModel = ViewModel(inputNumberString: "1")
-
+        var text: String = ""
+        
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
-            XCTAssertEqual($0, "17")
+            text = $0
         }
         
-        let inputNumberStr = "7"
-        viewModel.inputs.enterNumber(number: inputNumberStr)
+        viewModel.inputs.enterNumber(number: "1")
+        viewModel.inputs.enterNumber(number: "7")
+
+        XCTAssertEqual(text, "17")
     }
     
     func test_TotalNumberIs97AndInputIs2_Return972() {
-        viewModel = ViewModel(inputNumberString: "97")
-        
+        var text: String = ""
+
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
-            XCTAssertEqual($0, "972")
+            text = $0
         }
         
-        let inputNumberStr = "2"
-        viewModel.inputs.enterNumber(number: inputNumberStr)
+        viewModel.inputs.enterNumber(number: "97")
+        viewModel.inputs.enterNumber(number: "2")
+        XCTAssertEqual(text, "972")
     }
 
     //MARK: - Total Number charaters over 9 charaters
     func test_TotalNumberIs978276125AndInputIs2_Return978276125() {
-        viewModel = ViewModel(inputNumberString: "978276125")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
-            XCTAssertEqual($0, "978276125")
+            text = $0
         }
         
-        let inputNumberStr = "2"
-        viewModel.inputs.enterNumber(number: inputNumberStr)
+        viewModel.inputs.enterNumber(number: "978276125")
+        viewModel.inputs.enterNumber(number: "2")
+        XCTAssertEqual(text, "978276125")
     }
     
     // MARK: - Tap Operand Operation
@@ -91,240 +95,277 @@ class CalculateMachineTests: XCTestCase {
     
     // MARK: - PLUS
     func test_1Plus97_Return98() {
-        viewModel = ViewModel(inputNumberString: "1")
-        
+        var text: String = ""
+
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "98")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "1")
         operandStatment(num: "97", operand: "+")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "98")
     }
     
     func test_798271382Plus467282_Return798738664() {
-        viewModel = ViewModel(inputNumberString: "798271382")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "798738664")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "798271382")
         operandStatment(num: "467282", operand: "+")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "798738664")
     }
     
     // MARK: - Minus
     func test_97Minus1_Return96() {
-        viewModel = ViewModel(inputNumberString: "97")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "96")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "97")
         operandStatment(num: "1", operand: "-")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "96")
     }
     
     func test_1Minus97_ReturnNegative96() {
-        viewModel = ViewModel(inputNumberString: "1")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "-96")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "1")
         operandStatment(num: "97", operand: "-")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "-96")
     }
 
     func test_798271382Minus467282_Return797904100() {
-        viewModel = ViewModel(inputNumberString: "798271382")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "797804100")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "798271382")
         operandStatment(num: "467282", operand: "-")
         viewModel.inputs.equal()
-
+        XCTAssertEqual(text, "797804100")
     }
     
     // MARK: - Mutiple
     func test_3Mutiple4_Return12() {
-        viewModel = ViewModel(inputNumberString: "3")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "12")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "3")
         operandStatment(num: "4", operand: "x")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "12")
     }
 
     func test_5Mutiple0_Return0() {
-        viewModel = ViewModel(inputNumberString: "5")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "0")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "5")
         operandStatment(num: "0", operand: "x")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "0")
     }
     
     // Divide
     func test_10Divide3_Return3Point33333333() {
-        viewModel = ViewModel(inputNumberString: "10")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "3.33333333")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "10")
         operandStatment(num: "3", operand: "/")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "3.33333333")
     }
     
     func test_8Divide5_Return1Point6() {
-        viewModel = ViewModel(inputNumberString: "8")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "1.6")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "8")
         operandStatment(num: "5", operand: "/")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "1.6")
     }
 
     
     func test_10Divide0_ReturnError() {
-        viewModel = ViewModel(inputNumberString: "10")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "錯誤")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "10")
         operandStatment(num: "0", operand: "/")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "錯誤")
     }
 
     // MARK: - Tap Equal with Single Number
     func test_10DivideThenEqual_Return1() {
-        viewModel = ViewModel(inputNumberString: "10")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "1")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "10")
         viewModel.inputs.enterOperand(operandStr: "/")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "1")
     }
     
-    func test_10PlusThenEqual_Return1() {
-        viewModel = ViewModel(inputNumberString: "10")
+    func test_10PlusThenEqual_Return20() {
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "20")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "10")
         viewModel.inputs.enterOperand(operandStr: "+")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "20")
     }
 
     
     // MARK: - Tap Operand Charater twice
     func test_ChangePlusToMinus91And2_Return89() {
-        viewModel = ViewModel(inputNumberString: "91")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "89")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "91")
         viewModel.inputs.enterOperand(operandStr: "+")
         operandStatment(num: "2", operand: "-")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "89")
     }
     
     // MARK: - Tap AC
     func test_10PlusResetValue_Return0() {
-        viewModel = ViewModel(inputNumberString: "10")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
-            XCTAssertEqual($0, "0")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "10")
         viewModel.inputs.enterOperand(operandStr: "+")
         viewModel.inputs.reset()
+        XCTAssertEqual(text, "0")
     }
     
     func test_3ResetValueThenAdd10_Return10() {
-        viewModel = ViewModel(inputNumberString: "3")
-        viewModel.inputs.reset()
-
+        var text: String = ""
+        
         var outputs = viewModel.outputs
         outputs.didCalculateNumber = {
-            XCTAssertEqual($0, "10")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "3")
+        viewModel.inputs.reset()
         operandStatment(num: "10", operand: "+")
         viewModel.inputs.equal()
+        XCTAssertEqual(text, "10")
     }
     
     // MARK: - Tap Negitive Charater
     func test_10Point45WithNegitive_ReturnNegitive10Point45() {
-        viewModel = ViewModel(inputNumberString: "10.45")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
-            XCTAssertEqual($0, "-10.45")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "10.45")
         viewModel.inputs.negitive()
+        XCTAssertEqual(text, "-10.45")
     }
 
     func test_Negitive10WithNegitive_Return10() {
-        viewModel = ViewModel(inputNumberString: "-10")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
-            XCTAssertEqual($0, "10")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "-10")
         viewModel.inputs.negitive()
+        XCTAssertEqual(text, "10")
     }
     
     // MARK: - Tap Precentage Charater
     func test_10WithPrecentage_Return1() {
-        viewModel = ViewModel(inputNumberString: "10")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
-            XCTAssertEqual($0, "1")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "10")
         viewModel.inputs.percent()
+        XCTAssertEqual(text, "1")
     }
     
     func test_0WithPrecentage_Return() {
-        viewModel = ViewModel(inputNumberString: "0")
+        var text: String = ""
         
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
-            XCTAssertEqual($0, "0")
+            text = $0
         }
         
+        viewModel.inputs.enterNumber(number: "0")
         viewModel.inputs.percent()
+        XCTAssertEqual(text, "0")
     }
 
 }
