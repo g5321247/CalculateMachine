@@ -82,10 +82,9 @@ class ViewModel: ViewModelInputs, ViewModelOutputs {
     }
     
     func enterOperand(operandStr: String) {
-        operand = Operand(rawValue: operandStr)!
-        
         guard let secondNumber = Double(inputNumberString) else { return }
         calculate(num1: tmpNumber, num2: secondNumber, operand: operand)
+        operand = Operand(rawValue: operandStr)!
     }
     
     func equal() {
@@ -154,8 +153,9 @@ private extension ViewModel {
         
         // 確定小數點後面有沒有值，沒有就回傳整數，有回傳 Double
         let numberString: String = isIntOrDouble(num: result)
-        didCalculateNumber?(numberString)
         
+        didCalculateNumber?(numberString)
+        inputNumberString = numberString
         // reset temp Number
         tmpNumber = num2
     }

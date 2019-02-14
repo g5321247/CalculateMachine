@@ -47,7 +47,7 @@ class CalculateMachineTests: XCTestCase {
     
     //MARK: - First Number is not zero
     func test_TotalNumberIs1AndInputIs7_Return17() {
-        var text: String = ""
+        var text: String = "0"
         
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
@@ -75,7 +75,7 @@ class CalculateMachineTests: XCTestCase {
 
     //MARK: - Max1
     func test_TotalNumberIs978276125AndInputIs2_Return978276125() {
-        var text: String = ""
+        var text: String = "0"
         
         var outputs = viewModel.outputs
         outputs.didTextNumber = {
@@ -366,6 +366,24 @@ class CalculateMachineTests: XCTestCase {
         viewModel.inputs.enterNumber(number: "0")
         viewModel.inputs.percent()
         XCTAssertEqual(text, "0")
+    }
+    
+    // Mutiple Operand
+    func test_1Add2Minus1Mutiple4_Return8() {
+        var text: String = ""
+        
+        var outputs = viewModel.outputs
+        outputs.didCalculateNumber = {
+            text = $0
+        }
+        
+        viewModel.inputs.inputNumber(number: "1")
+        operandStatment(num: "2", operand: "+")
+        operandStatment(num: "1", operand: "-")
+        operandStatment(num: "4", operand: "x")
+
+        viewModel.inputs.equal()
+        XCTAssertEqual(text, "8")
     }
 
 }

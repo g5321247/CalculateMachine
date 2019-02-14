@@ -59,6 +59,7 @@
 		C85CA4FC2206C9AA00AC8140 /* CalculateMachineUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateMachineUITests.swift; sourceTree = "<group>"; };
 		C85CA4FE2206C9AA00AC8140 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C85CA50A2206C9CC00AC8140 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		C85CA50C2206CA7D00AC8140 /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		D00C673D25D8B94AADB92626 /* Pods-CalculateMachineTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculateMachineTests.debug.xcconfig"; path = "Target Support Files/Pods-CalculateMachineTests/Pods-CalculateMachineTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E36CD3B54E6C65526DDFB41A /* Pods_CalculateMachineUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalculateMachineUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
