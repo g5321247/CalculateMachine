@@ -22,7 +22,7 @@ class CalculateMachineTests: XCTestCase {
         viewModel = nil
     }
 
-    //MARK: - Total Number is zero
+    //MARK: - First Number is zero
     func test_InputIs0_Return0() {
         
         var outputs = viewModel.outputs
@@ -45,7 +45,7 @@ class CalculateMachineTests: XCTestCase {
         viewModel.inputs.enterNumber(number: inputNumberStr)
     }
     
-    //MARK: - Total Number is not zero
+    //MARK: - First Number is not zero
     func test_TotalNumberIs1AndInputIs7_Return17() {
         var text: String = ""
         
@@ -60,20 +60,20 @@ class CalculateMachineTests: XCTestCase {
         XCTAssertEqual(text, "17")
     }
     
-    func test_TotalNumberIs97AndInputIs2_Return972() {
-        var text: String = ""
+//    func test_TotalNumberIs97AndInputIs2_Return972() {
+//        var text: String = ""
+//
+//        var outputs = viewModel.outputs
+//        outputs.didTextNumber = {
+//            text = $0
+//        }
+//
+//        viewModel.inputs.enterNumber(number: "97")
+//        viewModel.inputs.enterNumber(number: "2")
+//        XCTAssertEqual(text, "972")
+//    }
 
-        var outputs = viewModel.outputs
-        outputs.didTextNumber = {
-            text = $0
-        }
-        
-        viewModel.inputs.enterNumber(number: "97")
-        viewModel.inputs.enterNumber(number: "2")
-        XCTAssertEqual(text, "972")
-    }
-
-    //MARK: - Total Number charaters over 9 charaters
+    //MARK: - Max1
     func test_TotalNumberIs978276125AndInputIs2_Return978276125() {
         var text: String = ""
         
@@ -108,19 +108,19 @@ class CalculateMachineTests: XCTestCase {
         XCTAssertEqual(text, "98")
     }
     
-    func test_798271382Plus467282_Return798738664() {
-        var text: String = ""
-        
-        var outputs = viewModel.outputs
-        outputs.didCalculateNumber = {
-            text = $0
-        }
-        
-        viewModel.inputs.enterNumber(number: "798271382")
-        operandStatment(num: "467282", operand: "+")
-        viewModel.inputs.equal()
-        XCTAssertEqual(text, "798738664")
-    }
+//    func test_798271382Plus467282_Return798738664() {
+//        var text: String = ""
+//
+//        var outputs = viewModel.outputs
+//        outputs.didCalculateNumber = {
+//            text = $0
+//        }
+//
+//        viewModel.inputs.enterNumber(number: "798271382")
+//        operandStatment(num: "467282", operand: "+")
+//        viewModel.inputs.equal()
+//        XCTAssertEqual(text, "798738664")
+//    }
     
     // MARK: - Minus
     func test_97Minus1_Return96() {
@@ -151,19 +151,19 @@ class CalculateMachineTests: XCTestCase {
         XCTAssertEqual(text, "-96")
     }
 
-    func test_798271382Minus467282_Return797904100() {
-        var text: String = ""
-        
-        var outputs = viewModel.outputs
-        outputs.didCalculateNumber = {
-            text = $0
-        }
-        
-        viewModel.inputs.enterNumber(number: "798271382")
-        operandStatment(num: "467282", operand: "-")
-        viewModel.inputs.equal()
-        XCTAssertEqual(text, "797804100")
-    }
+//    func test_798271382Minus467282_Return797904100() {
+//        var text: String = ""
+//
+//        var outputs = viewModel.outputs
+//        outputs.didCalculateNumber = {
+//            text = $0
+//        }
+//
+//        viewModel.inputs.enterNumber(number: "798271382")
+//        operandStatment(num: "467282", operand: "-")
+//        viewModel.inputs.equal()
+//        XCTAssertEqual(text, "797804100")
+//    }
     
     // MARK: - Mutiple
     func test_3Mutiple4_Return12() {

@@ -46,7 +46,7 @@ protocol ViewModelOutputs {
     var didCalculateNumber: ((String) -> Void)? { get set }
 }
 
-class ViewModel: ViewModelBinding, ViewModelInputs, ViewModelOutputs {
+class ViewModel: ViewModelInputs, ViewModelOutputs {
     
     var inputs: ViewModelInputs { return self }
     var outputs: ViewModelOutputs { return self }
